@@ -1,62 +1,28 @@
-'''
-#Q2
-num1=input('Enter num1')
-num2=input('Enter num3')
-num1=float(num1)
-num2=float(num2)
-print( 'result=', num1/num2 )'''
+import requests
+import bs4
 
+page = requests.get('https://www.amazon.eg/s?k=fridge&crid=1MNKLE3EFWB6I&sprefix=fridge%2Caps%2C242&ref=nb_sb_noss_1')
+page2 = requests.get('https://www.amazon.eg/s?k=fridge&page=2&crid=1MNKLE3EFWB6I&qid=1671308256&sprefix=fridge%2Caps%2C242&ref=sr_pg_2')
+page3 = requests.get('https://www.amazon.eg/s?k=fridge&page=3&crid=1MNKLE3EFWB6I&qid=1671308263&sprefix=fridge%2Caps%2C242&ref=sr_pg_3')
+page4 = requests.get('https://www.amazon.eg/s?k=fridge&page=4&crid=1MNKLE3EFWB6I&qid=1671308297&sprefix=fridge%2Caps%2C242&ref=sr_pg_4')
+page5 = requests.get('https://www.amazon.eg/s?k=fridge&page=5&crid=1MNKLE3EFWB6I&qid=1671308297&sprefix=fridge%2Caps%2C242&ref=sr_pg_5')
+page6 = requests.get('https://www.amazon.eg/s?k=fridge&page=6&crid=1MNKLE3EFWB6I&qid=1671308297&sprefix=fridge%2Caps%2C242&ref=sr_pg_6')
+list1 = []
 
-"""
-#q1
-num1=float(47.28)
-print('tips=' ,.15*num1)
-tibs= num1*.15
-print('total=', tibs+num1)
-total=num1+tibs
-print('Each person needs to pay', total/2)"""
+con = page.content + page2.content +page3.content+page4.content+page5.content+page6.content
+soub = bs4.BeautifulSoup(con, "html.parser")
+products_details = soub.findAll('div', {'class': 'a-section a-spacing-small puis-padding-left-small puis-padding-right-small'})
+price = soub.find_all('span' , {'class' : 'a-offscreen'})
+rate = soub.find_all('span' , {'class' :'a-size-base'})
+product_list = []
+price_list =[]
+rating_list=[]
+for product in range(len(price)):
+    product_list.append(products_details[product].text)
+    price_list.append(price[product].text)
+    rating_list.append(rate[product].text)
 
-"""
-#Q3
-word1 = "How"
-word2 = "do"
-word3 = "you"
-word4 = "like"
-word5 = "Python"
-word6 = "so"
-word7 = "far?"
-print(word1,word2,word3,word4,word5,word6,word7)'''
-'''
-#Q4
-name = 'aya ahmed {}'
-print (name.format("mohamed"))
-name = 'aya ahmed '
-print(name.replace('a','A'))
-'''
+for product in range(len(price)):
+    print(price_list[product] ,'******' , product_list[product],'******' , rating_list[product])
 
-'''
-#q5
-
-name = 'fantastic'
-print( 'the length of a string=',len(name))
-'''
-
-'''
-#q6
-name=input('enter your name')
-age = float(input('enter your age'))
-address=input('enter your address')
-college=input('enter your college')
-telephone=input('your telephone')
-print('name:',name)
-print('age:',age)
-print('address:',address)
-print('college:',college)
-print('telephone:',telephone)
-'''
-
-
-name='mobile'
-print(name.replace('o','').replace('i','').replace('a','').replace('e','').replace('u',''))
-"""
 
